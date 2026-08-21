@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Step 1: Enter your name -->
+    <div id="login-screen">
+        <h1>Socket Chat</h1>
+        <p>Enter a username to join the room</p>
+        <input type="text" id="username-input" placeholder="Your name" maxlength="20">
+        <button id="join-btn">Join Chat</button>
+    </div>
+
+    <!-- Step 2: Chat room (hidden until you join) -->
+    <div id="chat-screen" class="hidden">
+        <header>
+            <h1>Socket Chat</h1>
+            <span id="online-as"></span>
+        </header>
+
+        <div id="messages"></div>
+
+        <form id="message-form">
+            <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <!-- Socket.io client (served automatically by the server) -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
