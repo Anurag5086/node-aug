@@ -9,8 +9,15 @@ const Message = require('./models/Message')
 const server = http.createServer(app)
 const io = new Server(server)
 
+const PORT = process.env.PORT || 3000
+
 // Serve frontend files from the "public" folder
 app.use(express.static('public'))
+
+// Fallback: always serve the chat page for "/"
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html')
+})
 
 mongoose.connect(process.env.MONGODB_URI)
         .then(() => console.log("MongoDB Connected!"))
