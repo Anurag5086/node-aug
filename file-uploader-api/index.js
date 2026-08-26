@@ -3,6 +3,22 @@ const app = express()
 const mongoose = require('mongoose')
 require('dotenv').config()
 const fileRoutes = require('./routes/fileRoutes')
+const helmet = require('helmet')
+const cors = require('cors')
+const rateLimit = require('express-rate-limit')
+
+// Security Middlewares
+app.use(helmet())
+app.use(cors({
+    origin: ['http://localhost:5173'],
+    credentials: true,
+    methods: ['GET', 'POST']
+}))
+
+app.use(rateLimit({
+    windowMs: 5 * 60 * 1000,
+    max: 5
+}))
 
 app.use('/api/file', fileRoutes)
 app.use('/uploads', express.static('uploads'))
