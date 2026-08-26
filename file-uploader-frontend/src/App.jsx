@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import './App.css'
 import axios from 'axios'
 
-const API_URL = 'http://localhost:3000/api/file/upload'
+const API_URL = `${import.meta.env.VITE_API_URL}/api/file/upload`
 const MAX_FILE_SIZE = 10 * 1024 * 1024
 
 function formatBytes(bytes) {

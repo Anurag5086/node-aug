@@ -10,7 +10,7 @@ const rateLimit = require('express-rate-limit')
 // Security Middlewares
 app.use(helmet())
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['https://cloud-vault-p2hj.onrender.com'],
     credentials: true,
     methods: ['GET', 'POST']
 }))
