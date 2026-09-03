@@ -15,12 +15,12 @@ exports.registerUser = async (req, res) => {
 
         const { error } = schema.validate({ name, email, password })
         if(error){
-            res.status(400).json({ success: false, message: "Input is Invalid!" , error })
+            return res.status(400).json({ success: false, message: "Input is Invalid!" , error })
         }
 
         const user = await User.findOne({ email })
         if(user){
-            res.status(400).json({ success: false, message: "Email already registered!" })
+            return res.status(400).json({ success: false, message: "Email already registered!" })
         }
 
         const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALTS))
@@ -50,17 +50,17 @@ exports.loginUser = async (req, res) => {
 
         const { error } = schema.validate({ email, password })
         if(error){
-            res.status(400).json({ success: false, message: "Input is Invalid!" , error })
+            return res.status(400).json({ success: false, message: "Input is Invalid!" , error })
         }
 
         const user = await User.findOne({ email })
         if(!user){
-            res.status(400).json({ success: false, message: "Email not registered!" })
+            return res.status(400).json({ success: false, message: "Email not registered!" })
         }
 
         const isMatch = await bcrypt.compare(password, user.password)
         if(!isMatch){
-            res.status(400).json({ success: false, message: "Incorrect Password!" })
+            return res.status(400).json({ success: false, message: "Incorrect Password!" })
         }
 
         const token = jwt.sign({
@@ -73,8 +73,26 @@ exports.loginUser = async (req, res) => {
             secure: process.env.NODE_ENV === "production",
             maxAge: 24 * 60 * 60 * 1000,
             sameSite: "lax"
-        }).status(200).json({ success: true, message: "Logged In successfully!" })
+        }).status(200).json({
+            success: true,
+            message: "Logged In successfully!",
+            user: { name: user.name, id: user._id }
+        })
     }catch(err){
         res.status(500).json({ message: 'Server error' });
+    }
+}
+
+exports.getCurrentUser = async (req, res) => {
+    try {
+        res.status(200).json({
+            success: true,
+            user: {
+                id: req.user.userId,
+                name: req.user.name,
+            },
+        })
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Server error' })
     }
 }

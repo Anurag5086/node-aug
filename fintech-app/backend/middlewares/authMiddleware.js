@@ -1,18 +1,19 @@
 const jwt = require('jsonwebtoken')
 
 const authMiddleware = async (req, res, next) => {
-    try{
+    try {
         const token = req.cookies.token
 
-        if(!token){
-            res.status(401).json({ success: false, message: "Token not provided!" })
+        if (!token) {
+            return res.status(401).json({ success: false, message: "Token not provided!" })
         }
+
         const payload = jwt.verify(token, process.env.JWT_SECRET)
         req.user = payload
 
         next()
-    }catch(err){
-        res.status(401).json({ success: false, message: "Invalid Token!" })
+    } catch (err) {
+        return res.status(401).json({ success: false, message: "Invalid Token!" })
     }
 }
 

@@ -1,0 +1,39 @@
+.income-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.income-filters {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.income-total {
+  color: #6ee7b7 !important;
+}
+
+.income-amount {
+  color: #6ee7b7 !important;
+  font-weight: 600;
+}
+
+.income-textarea {
+  width: 100%;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 0.85rem;
+  background: rgba(2, 6, 23, 0.65);
+  color: #f8fafc;
+  resize: vertical;
+  min-height: 5rem;
+}
+
+.income-textarea:focus {
+  outline: none;
+  border-color: #34d399;
+  box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.15);
+}
+
+.income-textarea::placeholder {
+  color: #64748b;
+}
