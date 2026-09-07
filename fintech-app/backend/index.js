@@ -33,7 +33,10 @@ app.use('/api/loans', loanPaymentRoutes)
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('MongoDB connected'))
+.then(() => {
+    console.log('MongoDB connected')
+    require('./jobs/emiReminderJob').start()
+})
 .catch((err) => console.log(err))
 
 app.listen(process.env.PORT || 3000, () => {

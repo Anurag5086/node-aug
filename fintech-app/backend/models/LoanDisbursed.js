@@ -38,6 +38,10 @@ const loanDisbursedSchema = new mongoose.Schema({
     principalAmountLeft: {
         type: Number,
         required: true
+    },
+    lastEmiReminderDueDate: {
+        type: Date,
+        default: null
     }
 }, { timestamps: true });
 
