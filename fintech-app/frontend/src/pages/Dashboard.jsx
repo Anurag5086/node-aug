@@ -6,6 +6,7 @@ import ExpensesPage from './ExpensesPage'
 import CategoriesPage from './CategoriesPage'
 import IncomePage from './IncomePage'
 import PlaceholderPage from './PlaceholderPage'
+import LoansPage from './loans/LoansPage'
 import './Dashboard.css'
 
 const PAGE_META = {
@@ -24,6 +25,10 @@ const PAGE_META = {
   categories: {
     title: 'Categories',
     subtitle: 'Organize budgets by category',
+  },
+  loans: {
+    title: 'Loans',
+    subtitle: 'Apply, manage, and repay your personal loan',
   },
   settings: {
     title: 'Settings',
@@ -74,6 +79,8 @@ function Dashboard({ user, onLogout }) {
         return <IncomePage user={user} />
       case 'categories':
         return <CategoriesPage user={user} />
+      case 'loans':
+        return <LoansPage user={user} />
       case 'settings':
         return (
           <PlaceholderPage

@@ -5,7 +5,7 @@ const joi = require('joi')
 const LoanDisbursed = require('../models/LoanDisbursed')
 const { GoogleGenAI } = require('@google/genai')
 
-const buildRiskScorePrompt = ({ loanFormJson, incomeRecordsJson, expenseRecordsJson, aggregates }) => {
+const buildRiskScorePrompt = ({ loanFormJsonString, incomeRecordsJsonString, expenseRecordsJsonString, aggregates }) => {
     const { totalMonthlyIncome, totalMonthlyExpenses, monthlySurplus, expenseToIncomeRatio } = aggregates
 
     return `You are a credit risk analyst for an Indian fintech lending platform.
@@ -27,13 +27,13 @@ If income or expense data is missing or empty, penalize the score (maximum 0.40)
 ---
 
 LOAN FORM:
-${loanFormJson}
+${loanFormJsonString}
 
 INCOME RECORDS:
-${incomeRecordsJson}
+${incomeRecordsJsonString}
 
 EXPENSE RECORDS:
-${expenseRecordsJson}
+${expenseRecordsJsonString}
 
 PRE-COMPUTED:
 - Total monthly income (INR): ${totalMonthlyIncome}
@@ -117,7 +117,7 @@ const createLoanForm = async (req, res) => {
             ? (totalMonthlyExpenses / totalMonthlyIncome).toFixed(2)
             : '1.00'
 
-        const loanFormJson = JSON.stringify({
+        const loanFormJsonString = JSON.stringify({
             applicantName,
             applicantEmail,
             applicantAddress,
@@ -128,13 +128,13 @@ const createLoanForm = async (req, res) => {
             kycDocumentProvided: Boolean(kycDocument),
         })
 
-        const incomeRecordsJson = JSON.stringify(incomes.map((income) => ({
+        const incomeRecordsJsonString = JSON.stringify(incomes.map((income) => ({
             amount: income.amount,
             source: income.source,
             remark: income.remark,
         })))
 
-        const expenseRecordsJson = JSON.stringify(expenses.map((expense) => ({
+        const expenseRecordsJsonString = JSON.stringify(expenses.map((expense) => ({
             amount: expense.amount,
             title: expense.title,
             paymentMethod: expense.paymentMethod,
@@ -143,9 +143,9 @@ const createLoanForm = async (req, res) => {
         })))
 
         const prompt = buildRiskScorePrompt({
-            loanFormJson,
-            incomeRecordsJson,
-            expenseRecordsJson,
+            loanFormJsonString,
+            incomeRecordsJsonString,
+            expenseRecordsJsonString,
             aggregates: {
                 totalMonthlyIncome,
                 totalMonthlyExpenses,
@@ -162,6 +162,8 @@ const createLoanForm = async (req, res) => {
             model: 'gemini-flash-latest',
             contents: prompt,
         })
+
+        console.log(response.text)
 
         const riskScore = parseRiskScore(response.text)
 

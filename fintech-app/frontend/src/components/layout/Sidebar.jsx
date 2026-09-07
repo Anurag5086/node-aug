@@ -3,6 +3,7 @@ const NAV_ITEMS = [
   { id: 'expenses', label: 'Expenses', icon: '↘' },
   { id: 'income', label: 'Income', icon: '↗' },
   { id: 'categories', label: 'Categories', icon: '▦' },
+  { id: 'loans', label: 'Loans', icon: '₹' },
   { id: 'settings', label: 'Settings', icon: '⚙' },
 ]
 

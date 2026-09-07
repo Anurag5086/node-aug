@@ -9,10 +9,14 @@ const authRoutes = require('./routes/authRoutes')
 const expenseRoutes = require('./routes/expenseRoutes')
 const incomeRoutes = require('./routes/incomeRoutes')
 const categoryRoutes = require('./routes/categoryRoutes')
+const loanFormRoutes = require('./routes/loanFormRoutes')
+const loanDisbursedRoutes = require('./routes/loanDisbursedRoutes')
+const loanTransactionRoutes = require('./routes/loanTransactionRoutes')
+const loanPaymentRoutes = require('./routes/loanPaymentRoutes')
 
 app.use(express.json())
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5174', 'http://localhost:5173'],
     credentials: true,
 }))
 app.use(cookieParser())
@@ -22,6 +26,10 @@ app.use('/api/auth', authRoutes)
 app.use('/api/expenses', expenseRoutes)
 app.use('/api/incomes', incomeRoutes)
 app.use('/api/categories', categoryRoutes)
+app.use('/api/loans', loanFormRoutes)
+app.use('/api/loans', loanDisbursedRoutes)
+app.use('/api/loans', loanTransactionRoutes)
+app.use('/api/loans', loanPaymentRoutes)
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI)
